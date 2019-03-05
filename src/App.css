@@ -1,32 +1,325 @@
+@import url('https://fonts.googleapis.com/css?family=Advent+Pro:400,700');
+
+body {
+  font-family: 'Advent Pro', sans-serif;
+  counter-reset: questions;
+}
+
 .App {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 50px repeat(12, 80px) 50px;
+  grid-template-rows: auto 300px 20px;
+  grid-column-gap: 15px;
+  grid-row-gap: 20px;
+  justify-content: center;
+  grid-template-areas: ". CHRS CHRS CHRS CHRS CHRS CHRS CHRS CHRS CHRS CHRS CHRS CHRS ."
+                       ". MCHR MCHR MCHR CTRL CTRL CTRL CTRL CTRL CCHR CCHR CCHR CCHR ."
+                       ". . . . . . . . . . . . . .";
+  overflow: hidden;
+  background-image: linear-gradient(#4A978D 30%, #C53048);
+}
+
+.ComputerCharacterBoxInfo {
+  grid-area: CCHR;
+  display: flex;
+}
+
+.Who { 
+  display: flex;
+  justify-content: flex-end; 
+}
+
+.Who-Card {
+  background-color: transparent;
+  width: 100px;
+  height: 175px;
+  perspective: 1000px;
+}
+
+.Who-Card-Inner {
+  border: 4px solid #FAE580;
+  border-radius: 4px;
+  position: relative;
+  width: 100%;
+  height: 100%;
   text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.Who-Front,
+.Who-Back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Who-Front {
+  transform: rotateY(180deg);
+}
+
+.Who-Back {
+  background-color: #FAE580;
+  color: white;
+  transform: rotateY(0deg);
+  display: flex;
+}
+
+.Who-Back > i {
+  font-size: 5rem;
+  color: #222;
+  margin: auto;
+}
+
+.ComputerQuestionsMade {
+  flex: 1;
+  margin: 0 15px 0 0;
+  padding-left: 0;
+  border: 2px dashed #FAE580;
+  border-radius: 2px;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  padding: 20px 5px 5px;
+  position: relative;
+}
+
+.ComputerQuestionsMade:before {
+  content: 'Player1 Questions';
+  position: absolute;
+  width: 150px;
+  height: 30px;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background-color: #FAE580;
+}
+
+.ComputerQuestionsMade > li {
+   color: #222;
+}
+.ComputerQuestionsMade > li::before {
+   counter-increment: questions;
+   content: counter(questions) " ";
+}
+
+.reveal { transform: rotateY(180deg)}
+
+.animate-incognito {
+  animation: incognito .2s infinite;
+}
+
+@keyframes incognito {
+  from {transform: scale(1, 1)}
+  to {transform: scale(1.1, 1.1)}
+}
+
+.Player {
+  grid-area: CTRL;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.Characters {
+  grid-area: CHRS;
+  display: grid;
+  grid-template-columns: repeat(12, 80px);
+  grid-template-rows: repeat(2, 130px);
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.Character {
+  border: 4px solid #FAE580;
+  border-bottom-width: 30px;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.Character > span {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #3f3f3f;
+}
+
+.my-character {
+  grid-area: MCHR;
+  display: flex;
+}
+
+.selectedChar {
+  border: 4px solid #FAE580;
+  background-color: #FAE580;
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+}
+
+.selectedChar > i {
+  font-size: 5rem;
+  color: #222;
+  margin: auto;
+}
+
+.info {
+  margin-left: 15px;
+  flex: 1;
+}
+
+.info p { 
+  margin: 0;
+  color: #FAE580;
+  text-transform: uppercase;
+  font-size: .9rem;
+}
+
+.info span {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.controls {
+  grid-area: controls;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.btn-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.control-player {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.control-player input {
+  border: 2px solid #FAE580;
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 3px;
+  color: #FAE580;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.btn-actions button, .Question button, .PlayAgain {
+  background-color: transparent;
+  border: 2px solid #FAE580;
+  color: #FAE580;
+  margin-top: 5px;
+  border-radius: 3px;
+  padding: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color .3s ease-in;
+}
+
+.btn-actions button:hover,
+.Question button:hover,
+.PlayAgain:hover {
+  background-color: #222;
+  color: #222;
+  text-shadow: -1px -1px 0 #FAE580,
+               1px -1px 0 #FAE580,
+               -1px 1px 0 #FAE580,
+               1px 1px 0 #FAE580;
+}
+
+.btn-actions button {
+  flex: 0 0 22%;
+}
+
+.Question button:first-child {
+  margin-right: 10px;
+}
+
+.btn-actions button:disabled {
+  cursor: not-allowed;
+  border: 2px solid #222;
+  text-decoration: line-through;
+  color: #222;
+  background-color: transparent;
+}
+
+.Question {
+  text-align: center;
+}
+
+.Question > h3 {
+  color: #FAE580;
+  margin-top: 0;
+}
+
+.Tip {
+  color: #FAE580;
+  text-align: center;
+  margin-top: 15px !important;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.Tip::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  background-color: #FAE580;
+  border-radius: 2px;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  animation: attention 1.5s linear alternate infinite;
+}
+
+@keyframes attention {
+  0% {
+    left: 0%;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    left: 50%;
+  }
+  100% {
+    left: calc(100% - 10px);
   }
 }
+
+.PlayAgain {
+  width: 200px;
+  height: 80px;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  box-sizing: content-box;
+}
+
+/* .PlayAgain:hover {
+  background-color: #222;
+  color: #222;
+  text-shadow: -1px -1px 0 #FAE580,
+               1px -1px 0 #FAE580,
+               -1px 1px 0 #FAE580,
+               1px 1px 0 #FAE580;
+} */
+
+.Debug {
+  grid-area: DG;
+  padding-left: 0;
+}
+
+
+
+
